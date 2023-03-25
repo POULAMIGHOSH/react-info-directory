@@ -3,6 +3,7 @@ import Card from "../UI/Card";
 import styled from "styled-components";
 import Button from "../UI/Button";
 import ErrorModel from "../UI/ErrorModel";
+import Wrapper from "../Healper/Wrapper";
 const AddUser = (props) => {
   const [EnteredUserName, setEnteredUserName] = useState("");
   const [EnteredAge, setEnteredAge] = useState("");
@@ -32,7 +33,7 @@ const AddUser = (props) => {
   };
   console.log(Error, "----");
   return (
-    <>
+    <Wrapper>
       {Error && (
         <ErrorModel
           title={Error.title}
@@ -59,7 +60,7 @@ const AddUser = (props) => {
           <Button type={"submit"}>Add User</Button>
         </Userform>
       </Card>
-    </>
+    </Wrapper>
   );
 };
 
