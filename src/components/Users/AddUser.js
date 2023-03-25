@@ -12,7 +12,7 @@ const AddUser = (props) => {
     if (EnteredAge.trim().length === 0 || EnteredUserName.trim().length === 0)
       return;
     if (+EnteredAge < 0) return;
-    // props.setUsers(...Users, {name:EnteredUserName,age:EnteredAge})
+    props.onAddUser(EnteredUserName, EnteredAge);
     setEnteredUserName("");
     setEnteredAge("");
   };
