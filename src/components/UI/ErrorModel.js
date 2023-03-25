@@ -1,12 +1,16 @@
 import React from "react";
+import ReactDOM from "react-dom";
 import styled from "styled-components";
 import Button from "./Button";
 import Card from "./Card";
 
 export default function ErrorModel(props) {
-  return (
-    <Card>
-      <Backdrop onClick={props.handleError}>
+  const BackDrop = (props) => {
+    return <Backdrop onClick={props.handleError} />;
+  };
+  const ModalOverlay = (props) => {
+    return (
+      <Card>
         <Model>
           <Header>
             <h2>{props.title}</h2>
@@ -18,8 +22,24 @@ export default function ErrorModel(props) {
             <Button onClick={props.handleError}>Ok</Button>{" "}
           </Actions>
         </Model>
-      </Backdrop>
-    </Card>
+      </Card>
+    );
+  };
+  return (
+    <>
+      {ReactDOM.createPortal(
+        <BackDrop handleError={props.handleError} />,
+        document.getElementById("backdrop-root")
+      )}
+      {ReactDOM.createPortal(
+        <ModalOverlay
+          title={props.title}
+          msg={props.msg}
+          handleError={props.handleError}
+        />,
+        document.getElementById("modal-root")
+      )}
+    </>
   );
 }
 
