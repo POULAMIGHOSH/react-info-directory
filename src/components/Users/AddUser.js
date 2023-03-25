@@ -2,16 +2,21 @@ import React, { useState } from "react";
 import Card from "../UI/Card";
 import styled from "styled-components";
 import Button from "../UI/Button";
-import UserList from "./UserList";
-
+import ErrorModel from "../UI/ErrorModel";
 const AddUser = (props) => {
   const [EnteredUserName, setEnteredUserName] = useState("");
   const [EnteredAge, setEnteredAge] = useState("");
+  const [Error, setError] = useState();
   const AddUserHandler = (event) => {
     event.preventDefault();
-    if (EnteredAge.trim().length === 0 || EnteredUserName.trim().length === 0)
+    if (EnteredAge.trim().length === 0 || EnteredUserName.trim().length === 0) {
+      setError({ title: "invalid input", msg: "enter valid input" });
       return;
-    if (+EnteredAge < 0) return;
+    }
+    if (+EnteredAge < 0) {
+      setError({ title: "invalid age", msg: "enter valid age" });
+      return;
+    }
     props.onAddUser(EnteredUserName, EnteredAge);
     setEnteredUserName("");
     setEnteredAge("");
@@ -22,26 +27,39 @@ const AddUser = (props) => {
   const UserAgeChangeHandler = (event) => {
     setEnteredAge(event.target.value);
   };
+  const ErrorHandler = () => {
+    setError(null);
+  };
+  console.log(Error, "----");
   return (
-    <Card>
-      <Userform onSubmit={AddUserHandler}>
-        <Userlabel htmlFor="username">UserName</Userlabel>
-        <Userinput
-          id="username"
-          type={"text"}
-          value={EnteredUserName}
-          onChange={UsernameChangeHandler}
+    <>
+      {Error && (
+        <ErrorModel
+          title={Error.title}
+          msg={Error.msg}
+          handleError={ErrorHandler}
         />
-        <Userlabel htmlFor="age">Age</Userlabel>
-        <Userinput
-          id="age"
-          type={"number"}
-          value={EnteredAge}
-          onChange={UserAgeChangeHandler}
-        />
-        <Button type={"submit"}>Add User</Button>
-      </Userform>
-    </Card>
+      )}
+      <Card>
+        <Userform onSubmit={AddUserHandler}>
+          <Userlabel htmlFor="username">UserName</Userlabel>
+          <Userinput
+            id="username"
+            type={"text"}
+            value={EnteredUserName}
+            onChange={UsernameChangeHandler}
+          />
+          <Userlabel htmlFor="age">Age</Userlabel>
+          <Userinput
+            id="age"
+            type={"number"}
+            value={EnteredAge}
+            onChange={UserAgeChangeHandler}
+          />
+          <Button type={"submit"}>Add User</Button>
+        </Userform>
+      </Card>
+    </>
   );
 };
 
